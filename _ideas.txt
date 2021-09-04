@@ -1,0 +1,64 @@
+
+Entity.Draw( Mesh )
+Entity.Draw( BoneView )
+Entity.Draw( VisualIK )
+
+Entity is Just an ID.
+Sort By Layer, EntID, Order, Shader
+
+Draw{
+    Geo         = new Geo();
+    Material    = new Material();
+    layer       = 0;
+    order       = 0;
+}
+
+----------------------
+What if there are Multiple Drawing Components?
+Does a Component Need to Register itself as Renderable along with ECS Component?
+
+Entity.MeshDraw
+Entity.BoneView
+Entity.VisualIK
+
+----------------------
+
+Entity can just be an Array of Bitsets
+
+// Game Entity Info is a Component
+class Ent{
+    id      = 0;
+    name    = "";
+    active  = true;
+}
+
+class Transform{
+    pos = new Vec3();
+    scl = new Vec3();
+    rot = new Quat();
+}
+
+class System{
+    static run( ecs ){
+        let q = ecs.query( [ ] )
+    }
+}
+
+Ecs.regCom( Transform );
+Ecs.regSys( System );
+
+let eID         = Ecs.newEnt();
+let transform   = Ecs.addCom( eID, "Transform" );
+let compID      = Ecs.pushCom( eID, new Ent( eID, "" ) );
+Ecs.rmCom( eID, compTypeID or CompName );
+
+
+class EntityWrapper{
+    constructor( ecs, ...comp ){
+        this.eID = ecs.newEnt();
+        for( c of comp ){
+            if( typeof c == "string" )  this[c]         = ecs.addCom( eID, c );
+            else if( c is Object )      this[c.name]    = ecs.pushCom( eID, c );
+        }
+    }
+}
