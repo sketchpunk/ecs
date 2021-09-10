@@ -1,0 +1,37 @@
+<html>
+
+<script type="module">
+import Components from "../src/Components.js";
+
+window.addEventListener( "load", ()=>{
+    //---------------------
+    let coms = new Components({
+        onReg : ( id, name )=>console.log( "Component Registered : %d - %s ", id, name ),
+    });
+
+    // Preloading Use Case
+    coms.reg( Node );
+    let n0 = coms.new( "Node", 0 );         // Create Instance of Registered Component
+
+    // Fast Prototyping Use Case
+    let n1 = coms.new( new NoReg(), 0 );    // Auto Register Com, Save Instance to SparseSet
+    let n2 = coms.new( NoInst, 0 );         // Auto Register Com, then create instance
+});
+
+class Node{
+    pos = [0,0];
+    rot = 0;
+    scl = 1;
+}
+
+class NoReg{
+    constructor( txt ){ this.str = txt ?? "woot"; }
+}
+
+class NoInst{ str = "yoot"; }
+
+</script>
+<body>
+
+</body>
+</html>

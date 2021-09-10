@@ -16,6 +16,10 @@ class SparseSet{
         this.sparse[ sID ] = idx;
     }
 
+    sparseExists( sID ){
+        return ( this.sparse[ sID ] != undefined && this.sparse[ sID ] != null );
+    }
+
     add( v, sID ){
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // data is full, need to add to array
@@ -38,6 +42,12 @@ class SparseSet{
         return this;
     }
 
+    sparseGet( sID ){
+        let idx = this.sparse[ sID ];
+        if( idx == undefined || idx == null ) return null;
+        return this.data[ idx ];
+    }
+
     nextAvailable( sID ){
         if( this.len == this.capacity ) return null;
 
@@ -49,13 +59,28 @@ class SparseSet{
         return this.data[ idx ];            // Return Existing Data 
     }
 
+    // Remove by using Sparse index
+    rmSparse( sID ){
+        const idx = this.sparse[ sID ];
+        if( idx === undefined || idx === null ){
+            console.warn( "Sparse ID was not found for removing item from SparseSet" );
+            return false;
+        }
+
+        console.log( "Removing dense index", idx );
+
+        this.rmIndex( idx );
+        return true;
+    }
+
+    // Remove by using Dense Index
     rmIndex( idx ){
         const lastIdx = this.len - 1;
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // If only One Item Left, Just set size to zero and clear sparse value
-        if( this.len == 1 ){
-            this.len == 0;
+        if( this.len == 1 && idx == 0 ){ console.log( "HERE" ) ;
+            this.len = 0;
             this.sparse[ this.dense[ 0 ] ] = null;
             return;
         // If the item to remove is the final item in the array, just reset len and clear sparse value
@@ -77,8 +102,6 @@ class SparseSet{
         this.data[ idx ]                    = lastDat;          // Last Data out into deleted spot
         this.dense[ idx ]                   = lastSID;          // ... along with its SID
         this.len--;                                             // Decrement Total Data Items
-
-        return this;
     }
 
     clear(){
@@ -87,4 +110,5 @@ class SparseSet{
         return this;
     }
 }
-return SparseSet;
+
+export default SparseSet;

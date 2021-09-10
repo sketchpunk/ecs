@@ -1,0 +1,32 @@
+<html>
+
+<script type="module">
+import SparseSet from "../src/SparseSet.js";
+
+window.addEventListener( "load", ()=>{
+    console.log( "test" );
+
+    let ss = new SparseSet();
+    ss.add( "a", 2 );
+    ss.add( "b", 1 );
+    ss.add( "c", 4 );
+
+    ss.rmIndex( 2 );
+    ss.add( "d", 5 );
+    
+    ss.rmIndex( 1 );
+    ss.rmIndex( 0 );
+
+    ss.clear();
+
+    ss.add( "z", 3 );
+    console.log( ss.nextAvailable( 4 ) );
+
+    console.log( ss );
+});
+
+</script>
+<body>
+
+</body>
+</html>
