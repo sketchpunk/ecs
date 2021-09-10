@@ -1,13 +1,16 @@
 // https://github.com/skypjack/entt
 
-import Components from "Components.js";
-import Entities   from "Entities.js";
-import Systems    from "Systems.js";
+import Components   from "Components.js";
+import Entities     from "Entities.js";
+import Systems      from "Systems.js";
+import Tags         from "Tags.js";
 
 class Ecs{
-    //#region REGISTRATION
-    regCom( com, onNew, onRecycle ){ return this; }
-    regSys( sys, stage=0 ){ return this; }
+    //#region MAIN
+    com = new Components();
+    ent = new Entities();
+    sys = new Systems();
+    tag = new Tags();
     //#endregion ///////////////////////////////////////////
 
     //#region ENTITIES
@@ -16,24 +19,21 @@ class Ecs{
     //#endregion ///////////////////////////////////////////
     
     //#region COMPONENTS
-    addComs( eID, ...comNames ){
+    addComs( entId, ...comNames ){
         // Check Ent Bitset if Com Exists?
         // if not, get new Com from Stack
         // Update Bitset that Ent has this component 
-        
+        // Return Array of Components
+    }
 
-    } // Return Array of Components
+    addCom( entId, comName ){} // Return Component
 
-    addCom( eID, comName ){ } // Return Component
-
-    pushCom( eID, com ){} // Push Unregistered Component Or new Component Instance
-
-    recycleCom( eID, comName ){};
+    recycleCom( entId, comName ){};
     //#endregion ///////////////////////////////////////////
 
     //#region EVENTS
-    onNewEntity(){}
-    onRecycleEntity(){}
+    //onNewEntity(){}
+    //onRecycleEntity(){}
     //#endregion ///////////////////////////////////////////
 }
 
