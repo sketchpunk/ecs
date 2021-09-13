@@ -1,0 +1,43 @@
+<html>
+
+<script type="module">
+import Systems from "../src/Systems.js";
+
+window.addEventListener( "load", ()=>{
+    
+    let sys = new Systems();
+
+    sys.reg( FnSys, 5 );
+    sys.reg( ecs=>{ console.log( "- run, closure" ); }, 4 );
+    sys.reg( ClsStaticSys, 3 );
+    sys.reg( new ClsStateSys( "woot" ), 2 );
+    sys.reg( ObjSys, 1 );
+
+    //sys.disable( "ClsStaticSys" );
+    sys.run( null );
+
+});
+
+
+function FnSys( ecs ){ console.log( "- run func" ); }
+
+const ObjSys = {
+    msg : "obj",
+    run : function( ecs ){ console.log( "- run", this.msg ); },
+};
+
+class ClsStateSys{
+    constructor( msg ){ this.msg = msg; }
+    run( ecs ){ console.log( "- run class instance", this.msg ); }
+}
+
+class ClsStaticSys{
+    static msg = "static";
+    static run( ecs ){ console.log( "- run ", this.msg ); }
+}
+
+</script>
+<body>
+
+</body>
+</html>
