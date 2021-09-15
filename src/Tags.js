@@ -1,12 +1,21 @@
-
-let TAG_ID = 0;
-
 class Tags{
-    items = {};
+    items   = new Array();
+    map     = {};
 
-    get( name ){ return this.items[ name ] ?? null; }
+    get( name ){ return this.map[ name ] ?? null; }
+    getName( id ){ return this.items[ id ]; }
 
-    add( name ){ return this.items[ name ] ?? ( this.items[ name ] = TAG_ID++ ); }
+    add( name ){
+        let id = this.map[ name ];
+        if( id !== undefined ) return id;
+
+        id = this.items.length;
+        this.items.push( name );
+        this.map[ name ] = id;
+
+        console.log( "[ Tag Added : %d.%s ]", id, name );
+        return id;
+    }
 
     batchAdd( ...args ){
         const rtn = new Array( args.length );

@@ -102,12 +102,16 @@ class Components{
         this.nameMap[ comName ] = comId;                // Map Name to Id for Quick Lookups
         if( this.onReg ) this.onReg( comId, comName );  // Tell any callback that a component has been created.
 
+        console.log( "[ Component Added : %d.%s ]", comId, stack.name );
         return this;
     }
 
+    getComponentName( comId ){ return this.stacks[ comId ].name; }
     getComponentId( name ){ return this.nameMap[ name ]; }
-    getStackByName( name ){ return this.stacks[ this.nameMap[ name ] ]; }
+    getStackByName( name ){ return this.stacks[ this.nameMap[ name ] ].data; }
     getBitmask( ...names ){ return null; } // Get a Bitmask for all the components.
+
+    getEntityComponent( entId, comId ){ return this.stacks[ comId ].entityGet( entId ); }
 
     // Handle creating a new instance of a component for an entity
     new( obj, entId ){
@@ -150,6 +154,17 @@ class Components{
 
                 return this.stacks[ comId ].entityInit( entId );
             break;
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // COMPONENT ID
+            case "number":
+                return this.stacks[ obj ].entityInit( entId );
+            break;
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            default:
+                console.log( "Component New - Unknown Typeof - ", obj, typeof obj );
+            break;
         }
 
         return null;
@@ -164,6 +179,20 @@ class Components{
         }
 
         this.stacks[ com ].entityRecycle( entID );
+    }
+
+    debugStack( comName ){
+        const stack = this.stacks[ this.nameMap[ comName ] ];
+        console.log( "%c [ Debug Stack : %d.%s ] ", "color:#00ffff; background:#2a2a2a; padding:3px 0px;", stack.id, stack.name );
+        console.log( "-- Sparse Len : %d ", stack.data.sparse.length );
+        console.log( "-- Capacity   : %d", stack.data.capacity );
+        console.log( "-- Length     : %d", stack.data.len );
+
+        for( let i of stack.data ){
+            console.log( "---- Entity [ %d ]", i.sparseId, i.value );
+        }
+
+        console.log( "%c [ END Debug Stack : %d.%s ] ", "color:#00ffff; background:#2a2a2a; padding:3px 0px;", stack.id, stack.name );
     }
 }
 

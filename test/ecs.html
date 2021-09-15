@@ -1,0 +1,54 @@
+<html>
+
+<script type="module">
+import Ecs from "../src/Ecs.js";
+
+window.addEventListener( "load", ()=>{
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    let ecs = new Ecs();
+    ecs.com.reg( class Pos{ pos = [0,0]; } );
+    ecs.com.reg( class Rot{ rot = 0; } );
+    ecs.com.reg( class Scl{ scl = 0; } );
+    ecs.sys.reg( function( ecs ){
+        let nodes = ecs.com.getStackByName( "Node" );
+        let len   = nodes.len;
+        console.log( nodes.len );
+
+        for( let itm of nodes ){
+            console.log( itm );
+        }
+    } );
+
+    ecs.tag.add( "tagA" );
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    let eId = ecs.newEnt();
+    ecs.tagEnt( eId, "tagA" );                          // Assign Tag
+
+    let coms    = ecs.assignComs( eId, "Pos", "Scl" );  // Assign Components
+    let rot     = ecs.assignCom( eId, "Rot" );
+    rot.rot = 1;                                        // Modifiy Component Data
+    coms[ 1 ].scl = 2;
+
+    //ecs.recycleEnt( eId );                            // Recycle Testing
+    //ecs.untagEnt( eId, "tagA" );
+    //ecs.recycleCom( eId, "Scl" );
+    
+    ecs.debugEnt( eId );                                // View Entity Data
+    ecs.com.debugStack( "Scl" );                        // View Component Stack Data
+    
+    //ecs.com.debugStack( "Pos" );
+    //ecs.com.debugStack( "Rot" );
+    //ecs.runSystems();
+
+});
+
+
+
+</script>
+<body>
+
+</body>
+</html>

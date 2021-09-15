@@ -30,6 +30,17 @@ class NoReg{
 
 class NoInst{ str = "yoot"; }
 
+
+coms.reg( Node, {
+    name : "nod",
+    onRecycle : ( c, entId )=>{},
+    onInit : ( c, entId )=>{},
+} );
+
+
+onRecycle   = null;             // Handle special cases of recycling objects
+    onInit      = null;   
+
 </script>
 <body>
 
